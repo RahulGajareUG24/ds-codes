@@ -6,11 +6,10 @@ struct node
     int num;                    //Data of the node
     struct node *nextptr;       //Address of the node
 }*hed;
-typedef struct node * NodeAddress;
 
-void createNodeList(int n);     //function to create the list
-void reverseDispList();         //function to convert the list in reverse
-void displayList();             //function to display the list
+void createLinkList(int n);
+void reverseList();
+void printList();
 
 int main()
 {
@@ -20,40 +19,36 @@ int main()
 		
     printf(" Input the number of nodes : ");
     scanf("%d", &n);
-    createNodeList(n);
-    printf("\n Data entered in the list are : \n");		
-    printList();
+    createLinkList(n);		
     reverseList();
-    printf("\n The list in reverse are :  \n");
+    printf("\n reverseList: \n");
     printList();
+    getch();
     return 0;
 }
 
-NodeAddress createLinkList(int n)
+void createLinkList(int n)
 {
-	NodeAddress fnNode= NULL;
-	NodeAddress tmp= NULL;
+    struct node *fnNode, *tmp;
     int num, i;
-	NodeAddress hed = (struct node *)malloc(sizeof(struct node));
-
-    if(hed == NULL) //check whether the fnnode is NULL and if so no memory allocation
+    hed = (struct node *)malloc(sizeof(struct node));
+    if(hed == NULL)
     {
         printf(" Memory can not be allocated.");
     }
     else
     {
 // reads data for the node through keyboard
-
         printf(" Input data for node 1 : ");
         scanf("%d", &num);
-        hed->num = num;      
-        hed->nextptr = NULL; // links the address field to NULL
+        hed-> num = num;      
+        hed-> nextptr = NULL; //Links the address field to NULL
         tmp = hed;
-// Creating n nodes and adding to linked list
+//Creates n nodes and adds to linked list
         for(i=2; i<=n; i++)
         {
             fnNode = (struct node *)malloc(sizeof(struct node));
-            if(fnNode == NULL)
+            if(fnNode == NULL) //check whether the fnnode is NULL and if so no memory allocation
             {
                 printf(" Memory can not be allocated.");
                 break;
@@ -62,21 +57,18 @@ NodeAddress createLinkList(int n)
             {
                 printf(" Input data for node %d : ", i);
                 scanf(" %d", &num);
- 
                 fnNode->num = num;      // links the num field of fnNode with num
                 fnNode->nextptr = NULL; // links the address field of fnNode with NULL
- 
                 tmp->nextptr = fnNode; // links previous node i.e. tmp to the fnNode
-                tmp = tmp->nextptr; 
+                tmp = tmp->nextptr;
             }
         }
     }
 }
 
-NodeAddress reverseList()
+void reverseList()
 {
-    NodeAddress prevNode= NULL;
-    NodeAddress curNode= NULL;
+    struct node *prevNode, *curNode;
  
     if(hed != NULL)
     {
@@ -115,4 +107,4 @@ void printList()
         }
     }
 }
-
+ 
