@@ -27,7 +27,7 @@ int partition(int a[], int low, int high)
 
 void quickSort(int a[], int low, int high)
 {
-    if (high < low) {
+    if (low < high) {
         int p = partition(a, low, high);
         quickSort(a, low, p - 1);
         quickSort(a, p + 1, high);
@@ -36,38 +36,40 @@ void quickSort(int a[], int low, int high)
 
 
 int * generateArray(int n) {
-	int * t = malloc( n * sizeof(int) );
-	if(t) {
-		for(int i=0; i<n; i++) {t[i] = rand()%1000;}
-	}
-	return t;
+    int * t = malloc( n * sizeof(int) );
+    if(t) {
+        for(int i=0; i<n; i++) {t[i] = rand()%1000;}
+    }
+    return t;
 }
 
 void printArray(int *a, int n) {
-	printf("Array = ");
-	for(int i=0; i<n; i++) {
-		printf( i?", %d":"%d", a[i]);
-	}
-	printf(".\n");
-}
-
-void printArray1(int *a, int n) {
-	for(int i=0; i<n; i++) {
-		printf(" %d ", a[i]);
-	}
+    printf("Array = ");
+    for(int i=0; i<n; i++) {
+        printf( i?", %d":"%d", a[i]);
+    }
+    printf(".\n");
 }
 
 int main(int argc, char **argv) {
-	int * a;
-	int n = 10;
+    int * a;
+    int n = 10;
 
-	srand(time(NULL));
+    srand(time(NULL));
 
-	a = generateArray(n);
-	printArray(a,n);
-	quickSort(a, 0, n-1);
-	printArray(a,n);
-	getch();
-	free(a);
-	return 0;
+    a = generateArray(n);
+    if (a == NULL) {
+        printf("Error: memory allocation failed.\n");
+        return 1;
+    }
+
+    printArray(a,n);
+    quickSort(a, 0, n-1);
+    printArray(a,n);
+
+    printf("Press any key to continue...\n");
+    getchar();
+
+    free(a);
+    return 0;
 }
