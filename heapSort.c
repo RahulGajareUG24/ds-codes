@@ -2,24 +2,23 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define MAX 1000
+
 typedef struct heap{ 
     int data[MAX];
     int n;
-}heap;
+} heap;
 
 void swap(int *a, int *b){ 
     int t = *a; 
     *a = *b;
     *b = t; 
 }
-
 void siftdown(heap *maxHeap, int x){
-    int t; 
-    int d = 0;
     int maxkid;
-    int i;
-    while((i*2 <= maxHeap->n) && (!d)){ 
-        if(i*2 == maxHeap->n){ 
+    int i = x;
+    while((i*2 < maxHeap->n)){ 
+        if(i*2 == maxHeap->n-1){ 
             maxkid = i*2;
         }
         else if(maxHeap->data[i*2] > maxHeap->data[i*2+1]){
@@ -32,13 +31,11 @@ void siftdown(heap *maxHeap, int x){
 
         if(maxHeap->data[i] < maxHeap->data[maxkid])
         {
-            t = maxHeap->data[i];
-            maxHeap->data[i] = maxHeap->data[maxkid];
-            maxHeap->data[maxkid] = t;
+            swap(&maxHeap->data[i], &maxHeap->data[maxkid]);
             i = maxkid;
         }
         else{
-            d = 1;
+            break;
         }
     }
 }
@@ -65,19 +62,21 @@ void createHeap(heap *maxHeap, int *a, int n){
         return;
     }
     for(int i=0; i<n; i++){
-    maxHeap->data[i+1] = a[i];
+        maxHeap->data[i+1] = a[i];
     }
     maxHeap->n = n;
-    for(int i=n/2; i>0; i--){
+    for(int i=n/2; i>=1; i--){
         siftdown(maxHeap, i);
     }
 }
 
 void heapsort(heap *maxHeap, int *a, int n){
-    for (int i = n - 1; i >= 0; i--) {
+    for (int i = n - 1; i > 0; i--) {
         swap(&maxHeap->data[0], &maxHeap->data[i]);
         siftdown(maxHeap, 1);
-        }
+        a[i] = maxHeap->data[i];
+    }
+    a[0] = maxHeap->data[0];
 }
 
 int main(){
@@ -87,6 +86,9 @@ int main(){
     heap *maxHeap = malloc(sizeof(heap)); 
     createHeap(maxHeap, a, n); 
     heapsort(maxHeap, a, n);
-printArray(a, n);
+    printArray(a, n);
+    free(maxHeap);
+    free(a);
+getchar();
     return 0; 
 }
